@@ -1,9 +1,22 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { createMuiTheme, Drawer, IconButton, Divider, List, ListItem, ListItemText, CssBaseline } from "@material-ui/core";
+import BootstrapPage from "./components/Bootstrap";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 
-import { Hello } from "./components/Hello";
+const theme = createMuiTheme({
+    typography: {
+       useNextVariants: true
+    },
+    palette: {
+        type: 'light'
+    } 
+});
 
 ReactDOM.render(
-    <Hello compiler="TypeScript" framework="React" />,
+    <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <BootstrapPage />
+    </MuiThemeProvider>,
     document.getElementById("example")
 );

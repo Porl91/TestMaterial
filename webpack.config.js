@@ -30,5 +30,8 @@ module.exports = {
     externals: {
         "react": "React",
         "react-dom": "ReactDOM"
-    }
+    }, 
+
+    // Remove me
+    mode: 'development'
 };
