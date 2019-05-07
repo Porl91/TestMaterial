@@ -1,20 +1,31 @@
 import * as React from 'react';
-import { Typography, AppBar, Drawer, Toolbar, IconButton, Badge, List, ListItem, ListItemText, Theme, withTheme, Divider, withStyles, WithStyles, createStyles, CssBaseline } from "@material-ui/core";
+import { Typography, AppBar, Drawer, Toolbar, IconButton, Badge, List, ListItem, ListItemText, Theme, withTheme, Divider, withStyles, WithStyles, createStyles, CssBaseline, TextField, Grid, Button, FormControl, FormLabel, Paper } from "@material-ui/core";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import SaveIcon from '@material-ui/icons/Save';
 import { default as MenuIcon } from '@material-ui/icons/Menu'
 import { default as NotificationsIcon } from '@material-ui/icons/Notifications';
 import classNames from 'classnames';
+import { Record } from 'immutable';
+import { string } from 'prop-types';
 
-// type BootstrapParams = {
-//     name: string;
-//     sidebarOpen: boolean;
-// };
+type ProductParams = {
+    name: string;
+    address: string;
+    telephone: string;
+    website: string;
+};
 
-// export class BootstrapRecord extends Record<BootstrapParams>({ name: '', sidebarOpen: false }) {
-//     with<TKey extends keyof BootstrapParams>(key: TKey, value: BootstrapParams[TKey]) {
-//         return this.set(key, value);
-//     }
-// }
+var defaultProduct = { 
+    name: '',
+    address: '', 
+    telephone: '', 
+    website: '' 
+};
+export class ProductRecord extends Record<ProductParams>(defaultProduct) {
+    with<TKey extends keyof ProductParams>(key: TKey, value: ProductParams[TKey]) {
+        return this.set(key, value);
+    }
+}
 
 const drawerWidth = 240;
 
@@ -81,23 +92,31 @@ export interface BootstrapPageProps extends WithStyles<typeof styles> {
 
 export interface BootstrapPageState {
     sidebarOpen: boolean;
+    product: ProductRecord;
 }
 
 class BootstrapPage extends React.Component<BootstrapPageProps, BootstrapPageState> {
     constructor(props: BootstrapPageProps) {
         super(props);
         this.state = {
-            sidebarOpen: props.sidebarOpen || false
+            sidebarOpen: props.sidebarOpen || false, 
+            product: new ProductRecord()
         };
     }
 
-    updateSidebarOpen(newState: boolean) {
+    updateState<TKey extends keyof BootstrapPageState>(name: TKey, newState: BootstrapPageState[TKey]) {
         this.setState({
-            sidebarOpen: newState
-        });
+            [name]: newState
+        } as Pick<BootstrapPageState, keyof BootstrapPageState>);
     }
-    onSidebarOpen = () => this.updateSidebarOpen(true);
-    onSidebarClose = () => this.updateSidebarOpen(false);
+    onSidebarOpen = () => this.updateState('sidebarOpen', true);
+    onSidebarClose = () => this.updateState('sidebarOpen', false);
+    onProductChange = (name: keyof ProductParams) => 
+        (ev: React.ChangeEvent<HTMLInputElement>) => {
+            this.setState({
+                product: this.state.product.set(name, ev.currentTarget.value)
+            } as Pick<BootstrapPageState, keyof BootstrapPageState>);
+        };
 
     render() {
         const { classes } = this.props;
@@ -154,14 +173,104 @@ class BootstrapPage extends React.Component<BootstrapPageProps, BootstrapPageSta
                     })}
                 >
                     <div className={classes.drawerHeader} />
+                    <Grid container direction='row' sm={2}>
+                        <Grid item direction='column'>
+                            <Grid item xs>
+                                <TextField
+                                    id="outlined-name"
+                                    label="Name"
+                                    value={this.state.product.name}
+                                    onChange={this.onProductChange('name')}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs>
+                                <TextField
+                                    id="outlined-name"
+                                    label="Address"
+                                    value={this.state.product.address}
+                                    onChange={this.onProductChange('address')}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs>
+                                <TextField
+                                    id="outlined-name"
+                                    label="Telephone"
+                                    value={this.state.product.telephone}
+                                    onChange={this.onProductChange('telephone')}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs>
+                                <TextField
+                                    id="outlined-name"
+                                    label="Website"
+                                    value={this.state.product.website}
+                                    onChange={this.onProductChange('website')}
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                        </Grid>
+                        <Grid item xs>
+                            TestField
+                        </Grid>
+                    </Grid>
+                    {/*
                     <Typography paragraph>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                         incididunt ut labore et dolore magna aliqua.
                     </Typography>
-                    <Typography paragraph>
-                        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-                        facilisi etiam dignissim diam.
-                    </Typography>
+                    <Grid container spacing={16}>
+                        <Grid item xs={2}>
+                            <TextField
+                                id="outlined-name"
+                                label="Name"
+                                value={this.state.product.name}
+                                onChange={this.onProductChange('name')}
+                                margin="normal"
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <TextField
+                                id="outlined-name"
+                                label="Address"
+                                value={this.state.product.address}
+                                onChange={this.onProductChange('address')}
+                                margin="normal"
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <TextField
+                                id="outlined-name"
+                                label="Telephone Number"
+                                value={this.state.product.telephone}
+                                onChange={this.onProductChange('telephone')}
+                                margin="normal"
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <TextField
+                                id="outlined-name"
+                                label="Website"
+                                value={this.state.product.website}
+                                onChange={this.onProductChange('website')}
+                                margin="normal"
+                                variant="outlined"
+                            />
+                        </Grid>
+                        <Button variant="contained" size="small">
+                            <SaveIcon />
+                            Save
+                        </Button>
+                    </Grid> */}
                 </main>
             </div>
         );
