@@ -10,7 +10,10 @@ const theme = createMuiTheme({
     },
     palette: {
         type: 'light'
-    } 
+    }, 
+    spacing: {
+        unit: 16
+    }
 });
 
 ReactDOM.render(

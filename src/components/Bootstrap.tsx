@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { Typography, AppBar, Drawer, Toolbar, IconButton, Badge, List, ListItem, ListItemText, Theme, withTheme, Divider, withStyles, WithStyles, createStyles, CssBaseline, TextField, Grid, Button, FormControl, FormLabel, Paper } from "@material-ui/core";
+import { Typography, AppBar, Drawer, Toolbar, IconButton, Badge, List, ListItem, ListItemText, Theme, withTheme, Divider, withStyles, WithStyles, createStyles, CssBaseline, TextField, Grid, Button, FormControl, FormLabel, Paper, ListItemIcon, Link } from "@material-ui/core";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SaveIcon from '@material-ui/icons/Save';
+import CloseIcon from '@material-ui/icons/Close';
+import InboxIcon from '@material-ui/icons/Inbox';
+import MailIcon from '@material-ui/icons/Mail';
+import Breadcrumbs from '@material-ui/lab/Breadcrumbs';
 import { default as MenuIcon } from '@material-ui/icons/Menu'
 import { default as NotificationsIcon } from '@material-ui/icons/Notifications';
 import classNames from 'classnames';
@@ -43,9 +47,17 @@ const styles = (theme: Theme) => createStyles({
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
         transition: theme.transitions.create(['margin', 'width'], {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
         }),
+    },
+    appBarBottom: {
+        top: 'auto',
+        bottom: 0
+    },
+    toolbar: {
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
     menuButton: {
         marginLeft: 12,
@@ -84,6 +96,18 @@ const styles = (theme: Theme) => createStyles({
         }),
         marginLeft: 0,
     },
+    paper: {
+        padding: theme.spacing.unit
+    }, 
+    textField: {
+        width: "100%"
+    }, 
+    barButton: {
+        marginRight: '8px'
+    }, 
+    breadcrumb: {
+        marginBottom: '16px'
+    }
 });
 
 export interface BootstrapPageProps extends WithStyles<typeof styles> {
@@ -173,104 +197,137 @@ class BootstrapPage extends React.Component<BootstrapPageProps, BootstrapPageSta
                     })}
                 >
                     <div className={classes.drawerHeader} />
-                    <Grid container direction='row' sm={2}>
-                        <Grid item direction='column'>
-                            <Grid item xs>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Name"
-                                    value={this.state.product.name}
-                                    onChange={this.onProductChange('name')}
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Address"
-                                    value={this.state.product.address}
-                                    onChange={this.onProductChange('address')}
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Telephone"
-                                    value={this.state.product.telephone}
-                                    onChange={this.onProductChange('telephone')}
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs>
-                                <TextField
-                                    id="outlined-name"
-                                    label="Website"
-                                    value={this.state.product.website}
-                                    onChange={this.onProductChange('website')}
-                                    margin="normal"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                        </Grid>
-                        <Grid item xs>
-                            TestField
-                        </Grid>
-                    </Grid>
-                    {/*
-                    <Typography paragraph>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                        incididunt ut labore et dolore magna aliqua.
+                    <Typography component="h4" variant="h3" gutterBottom>
+                        Test Hotel
                     </Typography>
-                    <Grid container spacing={16}>
-                        <Grid item xs={2}>
-                            <TextField
-                                id="outlined-name"
-                                label="Name"
-                                value={this.state.product.name}
-                                onChange={this.onProductChange('name')}
-                                margin="normal"
-                                variant="outlined"
-                            />
+                    <Breadcrumbs aria-label="Breadcrumb" className={classes.breadcrumb}>
+                        <Link color="inherit" href="/App/">
+                            Home
+                        </Link>
+                        <Link color="inherit" href="/App/Products/">
+                            Products
+                        </Link>
+                        <Link color="inherit" href="/App/Search?type=Accommodation">
+                            Accommodation
+                        </Link>
+                        <Typography color="textPrimary">Test Hotel</Typography>
+                    </Breadcrumbs>
+                    <Grid container spacing={8}>
+                        <Grid container item xs={12} spacing={24}>
+                            <Grid item xs={2}>
+                                <List>
+                                    {['Product Detail', 'Openings', 'Classifications', 'Channels'].map((text, index) => (
+                                        <ListItem button key={text}>
+                                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                            <ListItemText primary={text} />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Grid>
+                            <Grid item xs={5}>
+                                <Paper className={classes.paper}>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Name"
+                                            value={this.state.product.name}
+                                            onChange={this.onProductChange('name')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Address"
+                                            value={this.state.product.address}
+                                            onChange={this.onProductChange('address')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Telephone"
+                                            value={this.state.product.telephone}
+                                            onChange={this.onProductChange('telephone')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Website"
+                                            value={this.state.product.website}
+                                            onChange={this.onProductChange('website')}
+                                            margin="normal"
+                                            variant="outlined" 
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                </Paper>
+                            </Grid>
+                            <Grid item xs={5}>
+                                <Paper className={classes.paper}>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Name"
+                                            value={this.state.product.name}
+                                            onChange={this.onProductChange('name')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Address"
+                                            value={this.state.product.address}
+                                            onChange={this.onProductChange('address')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Telephone"
+                                            value={this.state.product.telephone}
+                                            onChange={this.onProductChange('telephone')}
+                                            margin="normal"
+                                            variant="outlined"
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <TextField
+                                            label="Website"
+                                            value={this.state.product.website}
+                                            onChange={this.onProductChange('website')}
+                                            margin="normal"
+                                            variant="outlined" 
+                                            className={classes.textField}
+                                        />
+                                    </Grid>
+                                </Paper>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={2}>
-                            <TextField
-                                id="outlined-name"
-                                label="Address"
-                                value={this.state.product.address}
-                                onChange={this.onProductChange('address')}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField
-                                id="outlined-name"
-                                label="Telephone Number"
-                                value={this.state.product.telephone}
-                                onChange={this.onProductChange('telephone')}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={2}>
-                            <TextField
-                                id="outlined-name"
-                                label="Website"
-                                value={this.state.product.website}
-                                onChange={this.onProductChange('website')}
-                                margin="normal"
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Button variant="contained" size="small">
-                            <SaveIcon />
-                            Save
-                        </Button>
-                    </Grid> */}
+                        <AppBar position="fixed" color="primary" className={classNames(classes.appBarBottom, {
+                            [classes.appBarShift]: sidebarOpen
+                        })}>
+                            <Toolbar className={classes.toolbar}>
+                                <Button variant="contained" className={classes.barButton}>
+                                    <SaveIcon />
+                                    Save
+                                </Button>
+                                <Button variant="contained" color="default" className={classes.barButton}>
+                                    Close
+                                    <CloseIcon />
+                                </Button>
+                            </Toolbar>
+                        </AppBar>
+                    </Grid>
                 </main>
             </div>
         );
